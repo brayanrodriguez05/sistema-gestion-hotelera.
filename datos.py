@@ -40,7 +40,7 @@ def leer_texto(mensaje):
     while True:
         valor = input(mensaje).strip()
         if valor:
-            return valor
+            return valor and any(letra.isalpha() for letra in valor)
         print("Entrada inválida. No deje el campo vacío.")
 
 
