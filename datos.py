@@ -39,9 +39,9 @@ def pausar():
 def leer_texto(mensaje):
     while True:
         valor = input(mensaje).strip()
-        if valor and any(letra.isalpha() for letra in valor):
+        if valor:
             return valor
-        print("Entrada inválida. No deje el campo vacío y escriba texto válido.")
+        print("Entrada inválida. No deje el campo vacío.")
 
 
 def leer_entero(mensaje, minimo=1):
