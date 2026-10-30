@@ -40,8 +40,31 @@ def leer_texto(mensaje):
     while True:
         valor = input(mensaje).strip()
         if valor:
-            return valor and any(letra.isalpha() for letra in valor)
+            return valor
         print("Entrada inválida. No deje el campo vacío.")
+
+
+def leer_solo_letras(mensaje):
+    while True:
+        valor = input(mensaje).strip()
+        if valor and all(
+            letra.isalpha() or letra.isspace() or letra in "-'"
+            for letra in valor
+        ) and any(letra.isalpha() for letra in valor):
+            return valor
+        print("Entrada inválida. Escriba solamente letras.")
+
+
+def leer_digitos(mensaje, cantidad=None):
+    while True:
+        valor = input(mensaje).strip()
+        if valor.isdigit() and (cantidad is None or len(valor) == cantidad):
+            return valor
+
+        if cantidad is None:
+            print("Entrada inválida. Escriba solamente números.")
+        else:
+            print(f"Entrada inválida. Debe escribir exactamente {cantidad} dígitos.")
 
 
 def leer_entero(mensaje, minimo=1):

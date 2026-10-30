@@ -46,11 +46,7 @@ def crear_reservacion():
     print("\n--- HUÉSPEDES REGISTRADOS ---")
     for codigo, h in huespedes.items():
         print(f"{codigo}. {h['nombre']} ({h['documento']})")
-    try:
-        huesped_id = int(input("Código del huésped: ").strip())
-    except ValueError:
-        print("El código debe ser un número entero.")
-        return
+    huesped_id = leer_entero("Código del huésped: ", 1)
     if huesped_id not in huespedes:
         print("El huésped seleccionado no existe.")
         return
@@ -144,8 +140,14 @@ def modificar_reservacion():
         return
     h = habitaciones[r["habitacion"]]
     noches = (nueva_salida - nueva_entrada).days
+    subtotal = noches * h["precio"] + r["servicios"]
+
+    if r["descuento"] > subtotal:
+        print("El descuento no puede superar el nuevo subtotal.")
+        return
+
     r["entrada"], r["salida"], r["noches"] = nueva_entrada, nueva_salida, noches
-    r["total"] = noches * h["precio"] + r["servicios"] - r["descuento"]
+    r["total"] = subtotal - r["descuento"]
     print("Reservación modificada correctamente.")
     print(f"Nuevo total estimado: {dinero(r['total'] + r['cargos'])}")
 

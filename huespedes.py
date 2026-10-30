@@ -1,4 +1,4 @@
-from datos import huespedes, reservaciones, leer_texto, pausar
+from datos import huespedes, reservaciones, leer_solo_letras, leer_digitos, leer_entero, pausar
 
 
 def registrar_huesped():
@@ -6,9 +6,9 @@ def registrar_huesped():
     from datos import siguiente_huesped
     # Se actualiza el contador del módulo datos mediante asignación explícita.
     import datos
-    nombre = leer_texto("Nombre completo: ")
-    documento = leer_texto("Documento o DPI (sin dejarlo vacío): ")
-    telefono = leer_texto("Teléfono: ")
+    nombre = leer_solo_letras("Nombre completo: ")
+    documento = leer_digitos("DPI (13 dígitos): ", 13)
+    telefono = leer_digitos("Teléfono (8 dígitos): ", 8)
     correo = input("Correo electrónico (opcional): ").strip()
 
     for existente in huespedes.values():
@@ -39,16 +39,14 @@ def consultar_historial():
         print("No hay huéspedes registrados.")
         return
     listar_huespedes()
-    try:
-        codigo = int(input("\nCódigo del huésped: ").strip())
-    except ValueError:
-        print("El código debe ser un número entero.")
-        return
+
+    codigo = leer_entero("\nCódigo del huésped: ", 1)
+
     if codigo not in huespedes:
         print("No existe un huésped con ese código.")
         return
 
-    print(f"\nHistorial de {huespedes[codigo]['nombre']}:")
+        print(f"\nHistorial de {huespedes[codigo]['nombre']}:")
     encontrados = [r for r in reservaciones.values() if r["huesped_id"] == codigo]
     if not encontrados:
         print("Este huésped aún no tiene reservaciones.")

@@ -1,4 +1,4 @@
-from datos import reservaciones, huespedes, pagos, leer_decimal, leer_opcion, pausar, dinero
+from datos import reservaciones, huespedes, pagos, leer_decimal, leer_entero, leer_opcion, leer_texto, pausar, dinero
 
 
 def seleccionar_reservacion():
@@ -9,11 +9,7 @@ def seleccionar_reservacion():
     for codigo, r in reservaciones.items():
         nombre = huespedes.get(r["huesped_id"], {}).get("nombre", "Desconocido")
         print(f"{codigo}. {nombre} | Habitación {r['habitacion']} | Estado: {r['estado']} | Total: {dinero(r['total'] + r['cargos'])}")
-    try:
-        codigo = int(input("Código de reservación: ").strip())
-    except ValueError:
-        print("El código debe ser un número entero.")
-        return None
+    codigo = leer_entero("Código de reservación: ", 1)
     if codigo not in reservaciones:
         print("No existe esa reservación.")
         return None
@@ -52,10 +48,7 @@ def agregar_cargo():
     if r["estado"] in ("Cancelada", "Finalizada"):
         print("No se pueden agregar cargos a una reservación cancelada o finalizada.")
         return
-    descripcion = input("Descripción del cargo adicional: ").strip()
-    if not descripcion or not any(c.isalpha() for c in descripcion):
-        print("La descripción no puede quedar vacía.")
-        return
+    descripcion = leer_texto("Descripción del cargo adicional: ")
     cargo = leer_decimal("Monto del cargo en quetzales: ", 0.01)
     r["cargos"] += cargo
     print(f"Cargo agregado: {descripcion} — {dinero(cargo)}")
